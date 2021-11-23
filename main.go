@@ -30,6 +30,7 @@ func main() {
 		})
 
 	r.Methods("POST").HandlerFunc(handlers.Upload)
+	r.Methods("PUT").HandlerFunc(handlers.Mkdir)
 	r.Methods("DELETE").HandlerFunc(handlers.Delete)
 
 	println("server listen in http://localhost:9000")
