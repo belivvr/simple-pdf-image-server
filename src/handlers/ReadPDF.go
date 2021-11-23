@@ -23,12 +23,12 @@ func ReadPDF(w http.ResponseWriter, r *http.Request) {
 	paths := strings.Split(r.URL.Path, "/")
 	pageNumber, _ := strconv.Atoi(paths[len(paths)-1])
 	path := strings.Join(paths[:len(paths)-1], "/")
-	svg, err := getPageSvg("./files"+path, pageNumber)
+	png, err := getPagePng("./files"+path, pageNumber)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	w.Write([]byte(svg))
+	w.Write([]byte(png))
 }
 
 func getPageNum(filepath string) (int, error) {
@@ -40,13 +40,13 @@ func getPageNum(filepath string) (int, error) {
 	return doc.NumPage(), nil
 }
 
-func getPageSvg(filepath string, pageNumber int) (string, error) {
+func getPagePng(filepath string, pageNumber int) ([]byte, error) {
 	doc, err := fitz.New(filepath)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer doc.Close()
 
-	svg, err := doc.SVG(pageNumber - 1)
-	return svg, err
+	png, err := doc.ImagePNG(pageNumber-1, 300)
+	return png, err
 }
