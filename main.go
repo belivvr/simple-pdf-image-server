@@ -32,6 +32,7 @@ func main() {
 	r.Methods("POST").HandlerFunc(handlers.Upload)
 	r.Methods("PUT").HandlerFunc(handlers.Mkdir)
 	r.Methods("DELETE").HandlerFunc(handlers.Delete)
+	r.Methods("VIEW").Path("/pdf").HandlerFunc(handlers.ParsePDF)
 
 	println("server listen in http://localhost:9000")
 	http.ListenAndServe(":9000", r)
