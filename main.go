@@ -12,6 +12,8 @@ import (
 func main() {
 	r := mux.NewRouter()
 
+	r.Use(mux.CORSMethodMiddleware(r))
+
 	r.Methods("GET").
 		HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if strings.Contains(r.URL.Path, ".jpg") ||
@@ -28,7 +30,6 @@ func main() {
 
 			handlers.ReadDir(w, r)
 		})
-
 	r.Methods("POST").HandlerFunc(handlers.Upload)
 	r.Methods("PUT").HandlerFunc(handlers.Mkdir)
 	r.Methods("DELETE").HandlerFunc(handlers.Delete)
